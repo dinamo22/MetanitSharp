@@ -6,15 +6,12 @@ namespace MetanitSharp
     {
         static void Main(string[] args)
         {
-            HelloWorld.Hello();
-        }
-    }
-
-    class HelloWorld
-    {   
-       public static void Hello()
-        {
-            Console.WriteLine("Hello World!");
+            Test_Massiv.Output_massiv10();
+            Test_Massiv.Numbers_in_massiv(2);
+            Test_Massiv.Numbers_in_DoubleMassiv(5);
+            Test_Massiv.Output_DoubleMassiv();
+            Test_Massiv.Numbers_in_DoubleMassiv(4);
+            Test_Massiv.Output_DoubleMassiv();
         }
     }
 }
