@@ -6,12 +6,12 @@ namespace MetanitSharp
     {
         static void Main(string[] args)
         {
-            Test_Massiv.Output_massiv10();
-            Test_Massiv.Numbers_in_massiv(2);
-            Test_Massiv.Numbers_in_DoubleMassiv(5);
-            Test_Massiv.Output_DoubleMassiv();
-            Test_Massiv.Numbers_in_DoubleMassiv(4);
-            Test_Massiv.Output_DoubleMassiv();
+            Random rand = new Random();
+            int[] Massiv = new int[100000];
+            For_Time.Timer_ON();
+            Safe_Massive_Sort.Solo_Bubble_Sort(Massiv);
+            For_Time.Timer_OFF();
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Timers;
 
 namespace MetanitSharp
 {
@@ -75,6 +76,110 @@ namespace MetanitSharp
                 }
                 Console.WriteLine();
             }
+        }
+    }
+    class Safe_Massive_Sort
+    {
+        static int[] Solo_Massiv;
+        public static int[] Solo_Bubble_Sort_Return(int[] Massiv)
+        {
+            int temp = 0;
+            Solo_Massiv = new int[Massiv.Length];
+            Solo_Massiv = Massiv;
+            for (int i = 0; i < Solo_Massiv.Length - 1; i++) 
+            {
+                for(int j = i + 1; j < Solo_Massiv.Length; j++)
+                {
+                    if (Solo_Massiv[i] > Solo_Massiv[j])
+                    {
+                        temp = Solo_Massiv[j];
+                        Solo_Massiv[j] = Solo_Massiv[i];
+                        Solo_Massiv[i] = temp;
+                    }
+                }
+            }
+            return Solo_Massiv;
+        }
+        public static void Solo_Bubble_Sort(int[] Massiv)
+        {
+            int temp = 0;
+            for (int i = 0; i < Massiv.Length - 1; i++)
+            {
+                for (int j = i; j < Massiv.Length; j++)
+                {
+                    if (Massiv[i] > Massiv[j])
+                    {
+                        temp = Massiv[j];
+                        Massiv[j] = Massiv[i];
+                        Massiv[i] = temp;
+                    }
+                }
+            }
+        }
+        public static void Solo_Selection_Sort(int[] Massiv)
+        {
+            int tmp = 0;
+            int j = 0;
+            for(int i = 0; i < Massiv.Length; i++)
+            {
+                j = i;
+                for(int k = i; k < Massiv.Length; k++)
+                {
+                    if (Massiv[j] > Massiv[k])
+                        j = k;
+                }
+                tmp = Massiv[i];
+                Massiv[i] = Massiv[j];
+                Massiv[j] = tmp;
+            }
+        }
+        public static void Solo_Quick_Sort(int[] Massiv, int first, int last)
+        {
+            int Pivot = (Massiv[(first+last)/2]);
+            int b = first, e = last; // те самые прыгающие элементы
+            do
+            {
+                while (Massiv[b] < Pivot) b++; // поиск ближайшего элемента, большего, чем разрешающий
+                while (Massiv[e] > Pivot) e--; // меньшего
+                if (b <= e)
+                {
+                    int Temp = Massiv[b];
+                    Massiv[b] = Massiv[e];
+                    Massiv[e] = Temp;
+                    b++;
+                    e--;
+                }
+            } while (b <= e);
+            if (e > first) Solo_Quick_Sort(Massiv, first, e);
+            if (b < last) Solo_Quick_Sort(Massiv, b, last);
+        }
+    }
+    class For_Time
+    {
+        private static System.Timers.Timer aTimer;
+        private static void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            aTimer = new System.Timers.Timer(1000);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Time: {0:HH:mm:ss.fff}",
+                              e.SignalTime);
+        }
+        public static void Timer_ON()
+        {
+            SetTimer();
+            Console.WriteLine("Timer started at {0:HH:mm:ss.fff}", DateTime.Now);
+        }
+        public static void Timer_OFF()
+        {
+            aTimer.Stop();
+            aTimer.Dispose();
         }
     }
 }
