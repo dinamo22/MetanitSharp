@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Timers;
+using System.IO;
+
 
 namespace MetanitSharp
 {
     class HelloWorld
-    {   
-       public static void Hello()
+    {
+        public static void Hello()
         {
             Console.WriteLine("Hello World!");
         }
@@ -31,75 +33,106 @@ namespace MetanitSharp
     }
     class Test_Massiv
     {
-        static int[] Massiv;
-        static int[][] DoubleMassiv = new int[3][];
-        static readonly int[] Massiv10 = new int[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-        static Random Rand = new Random();
-        public static void Output_massiv10()
+        public static void Write_Massiv(params int[] Input_Massiv)
         {
-            foreach(int i in Massiv10)
+            foreach (int i in Input_Massiv)
             {
-                Console.WriteLine(i);
+                Console.Write($"{i} ");
             }
+            Console.WriteLine();
         }
-        public static void Numbers_in_massiv(int Numb)
+        public static void Write_Massiv(params int[][] Input_Massiv)
         {
-            if (Numb > 0 && Numb < 25)
+            foreach (int[] i in Input_Massiv)
             {
-                Massiv = new int[Numb];
-            }
-            else
-            {
-                Console.WriteLine("Длина не больше 25 и не меньше 0");
-            }
-        }
-        public static void Numbers_in_DoubleMassiv(int Numb)
-        {
-            DoubleMassiv[0] = new int[Numb];
-            for (int i = 0; i < 3; i++)
-            {
-                DoubleMassiv[i] = new int[Numb];
-                for(int j = 0; j < Numb; j++)
+                foreach (int j in i)
                 {
-                    DoubleMassiv[i][j] = Rand.Next(10);
-                }
-            }
-        }
-        public static void Output_DoubleMassiv()
-        {
-            foreach(int[] i in DoubleMassiv)
-            {
-                foreach(int j in i)
-                {
-                    Console.Write(j);
-                    Console.Write(" ");
+                    Console.Write($"{j} ");
                 }
                 Console.WriteLine();
             }
         }
+        /// <summary>
+        /// Randomize massiv :)
+        /// </summary>
+        public static void Randomize_Massiv(int[] Input_Massiv)
+        {
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                Input_Massiv[i] = Rand.Next(10);
+            }
+        }
+        public static void Randomize_Massiv(int[] Input_Massiv, int Max)
+        {
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                Input_Massiv[i] = Rand.Next(Max);
+            }
+        }
+        public static void Randomize_Massiv(int[] Input_Massiv, int Min, int Max)
+        {
+            if (Min > Max)
+            {
+                Console.WriteLine("Error,Min > Max");
+                return;
+            }
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                Input_Massiv[i] = Rand.Next(Min, Max);
+            }
+        }
+        public static void Randomize_Massiv(int[][] Input_Massiv)
+        {
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                for (int j = 0; j < Input_Massiv[i].Length; j++)
+                {
+                    Input_Massiv[i][j] = Rand.Next(10);
+                }
+            }
+        }
+        public static void Randomize_Massiv(int[][] Input_Massiv, int Max)
+        {
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                for (int j = 0; j < Input_Massiv[i].Length; j++)
+                {
+                    Input_Massiv[i][j] = Rand.Next(Max);
+                }
+            }
+        }
+        public static void Randomize_Massiv(int[][] Input_Massiv, int Min, int Max)
+        {
+            if (Min > Max)
+            {
+                Console.WriteLine("Error,Min > Max");
+                return;
+            }
+            Random Rand = new Random();
+            for (int i = 0; i < Input_Massiv.Length; i++)
+            {
+                for (int j = 0; j < Input_Massiv[i].Length; j++)
+                {
+                    Input_Massiv[i][j] = Rand.Next(Min, Max);
+                }
+            }
+        }
+        /// <summary>
+        /// просто пример использования кортежа
+        /// </summary>
+        public static (int, int) Turple_Exem()
+        {
+            var test = (one: 4, two: 7);
+            return (test.one, test.two);
+        }
     }
     class Safe_Massive_Sort
     {
-        static int[] Solo_Massiv;
-        public static int[] Solo_Bubble_Sort_Return(int[] Massiv)
-        {
-            int temp = 0;
-            Solo_Massiv = new int[Massiv.Length];
-            Solo_Massiv = Massiv;
-            for (int i = 0; i < Solo_Massiv.Length - 1; i++) 
-            {
-                for(int j = i + 1; j < Solo_Massiv.Length; j++)
-                {
-                    if (Solo_Massiv[i] > Solo_Massiv[j])
-                    {
-                        temp = Solo_Massiv[j];
-                        Solo_Massiv[j] = Solo_Massiv[i];
-                        Solo_Massiv[i] = temp;
-                    }
-                }
-            }
-            return Solo_Massiv;
-        }
         public static void Solo_Bubble_Sort(int[] Massiv)
         {
             int temp = 0;
@@ -120,10 +153,10 @@ namespace MetanitSharp
         {
             int tmp = 0;
             int j = 0;
-            for(int i = 0; i < Massiv.Length; i++)
+            for (int i = 0; i < Massiv.Length; i++)
             {
                 j = i;
-                for(int k = i; k < Massiv.Length; k++)
+                for (int k = i; k < Massiv.Length; k++)
                 {
                     if (Massiv[j] > Massiv[k])
                         j = k;
@@ -133,9 +166,12 @@ namespace MetanitSharp
                 Massiv[j] = tmp;
             }
         }
+        /// <summary>
+        /// first - 0 , last - Massiv.Lenght -1
+        /// </summary>
         public static void Solo_Quick_Sort(int[] Massiv, int first, int last)
         {
-            int Pivot = (Massiv[(first+last)/2]);
+            int Pivot = (Massiv[(first + last) / 2]);
             int b = first, e = last; // те самые прыгающие элементы
             do
             {
@@ -180,6 +216,47 @@ namespace MetanitSharp
         {
             aTimer.Stop();
             aTimer.Dispose();
+        }
+    }
+    class Person
+    {
+        private string name;
+        private int age;
+        private int num;
+        public Person() : this("Noname")
+        {
+        }
+        public Person(string name) : this(name,21)
+        {
+        }
+        public Person(int age) : this("Noname", age)
+        {
+        }
+        public Person(string name,int age) : this(name, age, 666)
+        {
+        }
+        public Person(string name, int age,int num)
+        {
+            this.name = name;
+            this.age = age;
+            this.num = num;
+        }
+        public void GetInfo()
+        {
+            Console.WriteLine($"Имя: {name}  Возраст: {age}  Num: {num}");
+        }
+    }
+    class Hell
+    {
+        private int num;
+        private string name;
+        public Hell() { num = 21; name = "lost"; }
+        public Hell(int lol) { num = lol; name = "lost"; }
+        public Hell(string er) { num = 21; name = er; }
+        public Hell(int lol, string er) { num = lol;name = er;}
+        public void GetInfo()
+        {
+            Console.WriteLine($"Name: {name}  Num: {num}");
         }
     }
 }

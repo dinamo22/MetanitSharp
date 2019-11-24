@@ -6,12 +6,24 @@ namespace MetanitSharp
     {
         static void Main(string[] args)
         {
-            Random rand = new Random();
-            int[] Massiv = new int[100000];
-            For_Time.Timer_ON();
-            Safe_Massive_Sort.Solo_Bubble_Sort(Massiv);
-            For_Time.Timer_OFF();
-            
+            Person Tom = new Person("tom", 21);
+            Person Bob = new Person("bob");
+            Person Noname = new Person();
+            Person Pat = new Person(44);
+            Tom.GetInfo();
+            Bob.GetInfo();
+            Noname.GetInfo();
+            Pat.GetInfo();
+            Console.WriteLine();
+            Hell Lord = new Hell();
+            Hell Admin = new Hell("Admin");
+            Hell Dvor = new Hell(21);
+            Hell Nobody = new Hell(44, "nobody");
+            Lord.GetInfo();
+            Admin.GetInfo();
+            Dvor.GetInfo();
+            Nobody.GetInfo();
         }
+       
     }
 }
