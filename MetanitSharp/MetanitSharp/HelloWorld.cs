@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Timers;
-using System.IO;
 
 
 namespace MetanitSharp
@@ -195,7 +192,7 @@ namespace MetanitSharp
         private static System.Timers.Timer aTimer;
         private static void SetTimer()
         {
-            // Create a timer with a two second interval.
+            // Create a timer with a one second interval.
             aTimer = new System.Timers.Timer(1000);
             // Hook up the Elapsed event for the timer. 
             aTimer.Elapsed += OnTimedEvent;
@@ -220,27 +217,50 @@ namespace MetanitSharp
     }
     class Person
     {
+        private int test_m { get; set; } = 6; // просто для тестов автоматического св-ва
         private string name;
         private int age;
         private int num;
         public Person() : this("Noname")
         {
         }
-        public Person(string name) : this(name,21)
+        public Person(string name) : this(name, 21)
         {
         }
         public Person(int age) : this("Noname", age)
         {
         }
-        public Person(string name,int age) : this(name, age, 666)
+        public Person(string name, int age) : this(name, age, 666)
         {
         }
-        public Person(string name, int age,int num)
+        public Person(string name, int age, int num)
         {
-            this.name = name;
-            this.age = age;
-            this.num = num;
+            this.Name = name;
+            this.Age = age;
+            this.Num = num;
         }
+
+        public string Name
+        {
+            get => name;
+            // Св-во private по сути бесполезно, тк теперь изменить при неправлильном вводе ничего нельзя, разве что пересоздать объект
+            private set
+            {
+                if (value.Length > 20) { Console.WriteLine("Error! Name lenght can't be more than 20 characters"); }
+                else { name = value; }
+            }
+        } 
+        public int Age
+        {
+            get => age;
+            private set
+            {
+                if (value < 0 || value > 100) { Console.WriteLine("Error! Age < 0 or > 100 . Put age again!"); }
+                else { age = value; }
+            }
+        }
+        public int Num { get => num; set => num = value; }
+
         public void GetInfo()
         {
             Console.WriteLine($"Имя: {name}  Возраст: {age}  Num: {num}");
@@ -253,7 +273,7 @@ namespace MetanitSharp
         public Hell() { num = 21; name = "lost"; }
         public Hell(int lol) { num = lol; name = "lost"; }
         public Hell(string er) { num = 21; name = er; }
-        public Hell(int lol, string er) { num = lol;name = er;}
+        public Hell(int lol, string er) { num = lol; name = er; }
         public void GetInfo()
         {
             Console.WriteLine($"Name: {name}  Num: {num}");
