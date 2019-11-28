@@ -221,8 +221,11 @@ namespace MetanitSharp
         private string name;
         private int age;
         private int num;
+
+        //конструктор 
         public Person() : this("Noname")
         {
+
         }
         public Person(string name) : this(name, 21)
         {
@@ -238,8 +241,14 @@ namespace MetanitSharp
             this.Name = name;
             this.Age = age;
             this.Num = num;
+            Console.WriteLine($"Экземпляр класса Person {this.Name} создан");
         }
 
+        ~Person()
+        {
+            Console.WriteLine($"{name} удален");
+        }
+        //свойсва
         public string Name
         {
             get => name;
@@ -249,7 +258,7 @@ namespace MetanitSharp
                 if (value.Length > 20) { Console.WriteLine("Error! Name lenght can't be more than 20 characters"); }
                 else { name = value; }
             }
-        } 
+        }
         public int Age
         {
             get => age;
@@ -261,9 +270,41 @@ namespace MetanitSharp
         }
         public int Num { get => num; set => num = value; }
 
+        //перегрузки операторов
+        public static bool operator <(Person c1, Person c2)
+        {
+            return c1.age < c2.age;
+        }
+        public static bool operator >(Person c1, Person c2)
+        {
+            return c1.age > c2.age;
+        }
         public void GetInfo()
         {
             Console.WriteLine($"Имя: {name}  Возраст: {age}  Num: {num}");
+        }
+    }
+    class Users
+    {
+        //массивы для тест с индексаторами
+        Person[] users;
+        Person[,] users2;
+        public Users()
+        {
+            users = new Person[5];
+            users2 = new Person[3, 3];
+        }
+        //индексаторы 
+        public Person this[int index]
+        {
+            get => users[index];
+            set => users[index] = value;
+        }
+        // оп, перегрузили индексатар на др. массив 
+        public Person this[int someth,int someth2]
+        {
+            get => users2[someth,someth2];
+            set => users2[someth, someth2] = value;
         }
     }
     class Hell
