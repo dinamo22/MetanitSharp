@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary_Test\ClassLibrary_Test.csproj" />
+    <ProjectReference Include="..\ForExceptions\ForExceptions.csproj" />
   </ItemGroup>
 
 </Project>
