@@ -119,6 +119,20 @@ namespace MetanitSharp
                 }
             }
         }
+
+        delegate void Test_Delegate_(int[] massiv);
+        /// <summary>
+        /// просто пример использования делегата
+        /// </summary>
+        public static void Test_Delegate(int[] massiv)
+        {
+            Test_Delegate_ test_delegate = Randomize_Massiv;
+            test_delegate += Write_Massiv;
+            test_delegate += Safe_Massive_Sort.Solo_Bubble_Sort;
+            test_delegate += Write_Massiv;
+            test_delegate(massiv);
+        }
+        
         /// <summary>
         /// просто пример использования кортежа
         /// </summary>
@@ -166,6 +180,7 @@ namespace MetanitSharp
         /// <summary>
         /// first - 0 , last - Massiv.Lenght -1
         /// </summary>
+        ///  
         public static void Solo_Quick_Sort(int[] Massiv, int first, int last)
         {
             int Pivot = (Massiv[(first + last) / 2]);
