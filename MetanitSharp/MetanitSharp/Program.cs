@@ -18,7 +18,7 @@ namespace MetanitSharp
             }
             int[] massiv = new int[10];
             Test_Massiv.Test_Delegate(massiv);
-            
+            return 0;
         }
     }
 }
