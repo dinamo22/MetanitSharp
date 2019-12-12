@@ -10,6 +10,9 @@ namespace ClassLibrary_Test
             Console.WriteLine("Test command in ClassLibrary_Test");
         }
     }
+
+    //Изначально для тестов с наследованием, позже для понимания работы
+    //implicite explicite virtual override new base: this.
     public class Person
     {
         private string _name;
@@ -24,7 +27,7 @@ namespace ClassLibrary_Test
         }
         public void New_Employe(ref Person primer, string Boss_is) //для internal
         {
-            primer = new Employe(Name,Boss_is);
+            primer = new Employe(Name, Boss_is);
         }
         public void New_Employ(ref Person primer, string Company_is) //для internal 
         {
@@ -51,7 +54,7 @@ namespace ClassLibrary_Test
             Name = base.Name;
             Rang = Rang_is;
         }
-        public Employee(string Name_is,string Rang_is) :base(Name_is)
+        public Employee(string Name_is, string Rang_is) : base(Name_is)
         {
             Rang = Rang_is;
         }
@@ -94,6 +97,8 @@ namespace ClassLibrary_Test
         }
     }
 
+    //для теста абстрактных классом(метотов и тд)
+    //Позже добавлены обобщенные типы
     abstract public class Footbolist<Info_param>
     {
         public Footbolist(string Name, int Age)
@@ -116,9 +121,9 @@ namespace ClassLibrary_Test
         private string name;
         public override string Name
         {
-            get 
+            get
             {
-                return name; 
+                return name;
             }
             set
             {
@@ -165,10 +170,10 @@ namespace ClassLibrary_Test
         {
             Info = default;
         }
-        public Goolkeeper(string Name,int Age, int Info) : base(Name, Age)
+        public Goolkeeper(string Name, int Age, int Info) : base(Name, Age)
         {
             this.Info = Info;
-        } 
+        }
         public override void Display_PlayerInfo()
         {
             Console.WriteLine($"Вратарь {Name} сыграл в {Info} матчах в возрасте {Age} лет.");
@@ -179,11 +184,11 @@ namespace ClassLibrary_Test
         private int goals;
         public int Goals { get => goals; set => goals = value; }
         public override Info_param Info { get; set; } = default;
-        public Forward(string Name, int Age) : this(Name,Age,default)
+        public Forward(string Name, int Age) : this(Name, Age, default)
         {
 
         }
-        public Forward(string Name, int Age, Info_param Info) : this(Name,Age,Info,2)
+        public Forward(string Name, int Age, Info_param Info) : this(Name, Age, Info, 2)
         {
 
         }
@@ -199,6 +204,189 @@ namespace ClassLibrary_Test
         public override string ToString()
         {
             return base.ToString();
+        }
+    }
+
+    //тесты с делегатами
+    public class Delegate_function 
+    {
+        public delegate void Void_Massiv_function(int numb);
+        public delegate bool Bool_Massiv_function(int numb);
+        public static void Massiv_func_delegate(int[] massiv,Void_Massiv_function function )
+        {
+            for(int i = 0; i < massiv.Length; i++)
+            {
+                function(massiv[i]);
+            }
+        }
+        public static void Massiv_func_delegate(int[] massiv,Bool_Massiv_function function)
+        {
+            for(int i = 0; i < massiv.Length; i++)
+            {
+                if (function(massiv[i]))
+                {
+                    Console.WriteLine(massiv[i]);
+                }
+            }
+        }
+        public static void WriteNumber(int numb)
+        {
+            Console.Write($"{numb} ");
+        }
+    }
+
+    //тесты с событиями
+    public class Bank
+    {
+        public delegate void BankHandled(string message);
+        public event BankHandled Notify;
+        public Bank(int sum)
+        {
+            Sum = sum;
+        }
+        public int Sum { get; private set; }
+        public void Put(int sum)
+        {
+            Sum += sum;
+            Notify?.Invoke($"На счет положено {sum} , сумма {Sum}");
+        }
+        public void Take(int sum)
+        {
+            if (Sum > sum)
+            {
+                Sum -= sum;
+                Notify?.Invoke($"Со счета снято {sum}, оставшаяся сумма {Sum}");
+            }
+            else
+            {
+                Notify?.Invoke($"Невозможно выполнить операцию, на балансе недостаточно средств");
+            }
+        }
+        //for notify
+        public void NotifyConsoleOut(string message)
+        {
+            Console.WriteLine(message);
+        }
+        public void NotifyConsoleOutRed(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+    }
+    //тест класс данных для события
+    public class Bank_Account
+    {
+        public delegate void BankHandled(object sender,Bank_AccountEvengArgs e);
+        public event BankHandled Notify;
+        public Bank_Account(int sum)
+        {
+            Sum = sum;
+        }
+        public int Sum { get; private set; }
+        public void Put(int sum)
+        {
+            Sum += sum;
+            Notify?.Invoke(this, new Bank_AccountEvengArgs(sum,$"На счет положено {sum} , сумма {Sum}"));
+        }
+        public void Take(int sum)
+        {
+            if (Sum > sum)
+            {
+                Sum -= sum;
+                Notify?.Invoke(this, new Bank_AccountEvengArgs(sum,$"Со счета снято {sum}, оставшаяся сумма {Sum}"));
+            }
+            else
+            {
+                Notify?.Invoke(this,new Bank_AccountEvengArgs(sum,$"Невозможно выполнить операцию, на балансе недостаточно средств"));
+            }
+        }
+        //for notify
+        public void NotifyConsoleOut(object sender,Bank_AccountEvengArgs e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        public override string ToString()
+        {
+            return "Bank_Account";
+        }
+        public void NotifyConsoleOutRed(object sender,Bank_AccountEvengArgs e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(e.Message);
+            Console.WriteLine(e.Sum);
+            Console.WriteLine(sender.ToString());
+            Console.ResetColor();
+        }
+    }
+    //тут хранятся данные события
+    public class Bank_AccountEvengArgs
+    {
+        public int Sum { get; }
+        public string Message { get; }
+        public Bank_AccountEvengArgs(int sum, string message)
+        {
+            Sum = sum;
+            Message = message;
+        }
+    }
+    public class delegati_musor
+    {
+        public static void dlya_vizova()
+        {
+            Adam Eva = new Adam { Name = "Eva" };
+            Action<int, int> function = Adam.Function_bolshe_menshe;
+            Eva.Adam_func(5, 7, function);
+            Eva.Adam_func(7, 5, Adam.Function_bolshe_menshe);
+            Predicate<int> predicate = delegate (int x) { return x > 0; };
+            bool da = Guts.Age_menshe(6, predicate);
+            Func<int> func = Zero_move;
+            Func<int, int> func1 = First_move;
+            Func<int, int, string> func2 = Second_move;
+            ValueTuple<int, int> smth = Third_move(2, 5);
+            Console.WriteLine();
+        }
+        public static int Zero_move()
+        {
+            return 666;
+        }
+        public static int First_move(int x)
+        {
+            return x + 1;
+        }
+        public static string Second_move(int x, int y)
+        {
+            return ($"x+y={x + y}, x-y={x - y}");
+        }
+        public static (int, int) Third_move(int x, int y)
+        {
+            return (1, 2);
+        }
+        class Adam
+        {
+            public string Name { get; set; }
+            public void Adam_func(int x, int y, Action<int, int> func)
+            {
+                func(x, y);
+            }
+            public static void Function_bolshe_menshe(int x, int y)
+            {
+                if (x > y) Console.WriteLine($"{x} > {y}");
+                else Console.WriteLine($"{x} < {y}");
+            }
+        }
+        class Guts
+        {
+            public int Age { get; set; }
+            public static bool Age_menshe(int x, Predicate<int> func)
+            {
+                return func(x);
+            }
+        }
+        class Griffith
+        {
+            public int Age { get; set; }
+
         }
     }
 }
