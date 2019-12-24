@@ -279,6 +279,7 @@ namespace ClassLibrary_Test
     {
         public delegate void BankHandled(object sender,Bank_AccountEvengArgs e);
         public event BankHandled Notify;
+        
         public Bank_Account(int sum)
         {
             Sum = sum;
@@ -332,7 +333,7 @@ namespace ClassLibrary_Test
     }
     public class delegati_musor
     {
-        public static void dlya_vizova()
+        public static void Dlya_vizova()
         {
             Adam Eva = new Adam { Name = "Eva" };
             Action<int, int> function = Adam.Function_bolshe_menshe;
@@ -389,4 +390,53 @@ namespace ClassLibrary_Test
 
         }
     }
+
+    public class Somebody
+    {
+        public Somebody()
+        {
+            Me me = new Me();
+            me.Fortrashfunc();
+        }
+        delegate R DelegateReturn<out R>();
+        delegate void DelegateTake<in T>(T item);
+        public class Ones
+        {
+            public virtual void Display()
+            {
+                Console.WriteLine("It's \"Ones\"");
+            }
+        }
+        public class Told : Ones
+        {
+            public override void Display()
+            {
+                Console.WriteLine("It's \"Told\"");
+            }
+        }
+        public class Me
+        {
+            public void Fortrashfunc()
+            {
+                DelegateReturn<Ones> delegateOnesReturn = OnesReturn;
+                DelegateReturn<Ones> delegateOnesReturn1 = ToldReturn;
+                DelegateReturn<Told> delegateToldReturn = ToldReturn;
+                Ones ones = delegateOnesReturn();
+                Ones ones1 = delegateOnesReturn1();
+                Told ones2 = delegateToldReturn();
+                ones.Display();
+                ones1.Display();
+                ones2.Display();
+                DelegateTake<Ones> delegateOnesDisplay = OnesDisplay;
+                DelegateTake<Told> delegateOnesDisplay1 = OnesDisplay;
+                DelegateTake<Told> delegateToldDisplay = ToldDisplay;
+                
+            }
+            public Ones OnesReturn() => new Ones();
+            public Told ToldReturn() => new Told();
+            public void OnesDisplay(Ones ones) => ones.Display();
+            public void ToldDisplay(Told told) => told.Display();
+        }
+    }
+    
 }
