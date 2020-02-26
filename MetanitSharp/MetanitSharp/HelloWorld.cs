@@ -128,11 +128,11 @@ namespace MetanitSharp
         {
             Test_Delegate_ test_delegate = Randomize_Massiv;
             test_delegate += Write_Massiv;
-            test_delegate += Safe_Massive_Sort.Solo_Bubble_Sort;
+            test_delegate += Safe_Massive_Sort.Solo_Shit_Sort;
             test_delegate += Write_Massiv;
             test_delegate(massiv);
         }
-        
+
         /// <summary>
         /// просто пример использования кортежа
         /// </summary>
@@ -144,7 +144,7 @@ namespace MetanitSharp
     }
     class Safe_Massive_Sort
     {
-        public static void Solo_Bubble_Sort(int[] Massiv)
+        public static void Solo_Shit_Sort(int[] Massiv)
         {
             int temp = 0;
             for (int i = 0; i < Massiv.Length - 1; i++)
@@ -189,7 +189,7 @@ namespace MetanitSharp
             {
                 while (Massiv[b] < Pivot) b++; // поиск ближайшего элемента, большего, чем разрешающий
                 while (Massiv[e] > Pivot) e--; // меньшего
-                if (b <= e)
+                if (b <= e) // < - зациклится
                 {
                     int Temp = Massiv[b];
                     Massiv[b] = Massiv[e];
@@ -204,6 +204,19 @@ namespace MetanitSharp
     }
     class For_Time
     {
+        private static double worktimeis = 0;
+        public static double WorkTimeIs { get => worktimeis; set => worktimeis = value; }
+        private static void TurnTime(double timeON, bool OnOff)
+        {
+            
+            if (OnOff) WorkTimeIs = timeON;
+            if (!OnOff)
+            {
+                double res = timeON - WorkTimeIs;
+                if (WorkTimeIs != 0) Console.WriteLine("Work time is {0:0.000}",res);
+                WorkTimeIs = 0;
+            }
+        }
         private static System.Timers.Timer aTimer;
         private static void SetTimer()
         {
@@ -222,13 +235,17 @@ namespace MetanitSharp
         public static void Timer_ON()
         {
             SetTimer();
+            TurnTime(Convert.ToDouble(60*DateTime.Now.Minute+DateTime.Now.Second)+Convert.ToDouble(DateTime.Now.Millisecond)/1000, true);
             Console.WriteLine("Timer started at {0:HH:mm:ss.fff}", DateTime.Now);
         }
         public static void Timer_OFF()
         {
+            TurnTime(Convert.ToDouble(60 * DateTime.Now.Minute + DateTime.Now.Second) + Convert.ToDouble(DateTime.Now.Millisecond / 1000), false);
+            Console.WriteLine("Timer ended at {0:HH:mm:ss.fff}", DateTime.Now);
             aTimer.Stop();
             aTimer.Dispose();
         }
+        
     }
     class Person
     {

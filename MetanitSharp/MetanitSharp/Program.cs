@@ -1,6 +1,7 @@
 ﻿using System;
 using ClassLibrary_Test;
 using ForExceptions;
+using Additional_opportunities;
 
 namespace MetanitSharp
 {
@@ -8,83 +9,106 @@ namespace MetanitSharp
     {
         static void Main(string[] args)
         {
-            //delegati_musor.Dlya_vizova();
-            Bank_Account bank = new Bank_Account(400);
-            bank.Notify += bank.NotifyConsoleOut;
-            bank.Notify += bank.NotifyConsoleOutRed;
-            bank.Put(20);
-            bank.Notify -= bank.NotifyConsoleOutRed;
-            bank.Take(410);
-
-            Work_With_Interfaces.Dlya_vizova3();
-            Somebody somebody = new Somebody();
-            ForICloneable.SomeClass1 clon = new ForICloneable.SomeClass1 { Age = 21, Name = "Dima", SomeClass2_obj = new ForICloneable.SomeClass2 { Lenght = 175 } };
-            clon.Display();
-            ForICloneable.SomeClass1 clon2 = (ForICloneable.SomeClass1)clon.Clone();
-            clon2.Display();
-            clon2.Age = 22;
-            clon.Display();
-            clon2.Display();
-            ForICloneable.SomeClass1 smth1 = new ForICloneable.SomeClass1(name: "spirit", lenght: 590, age: 66);
-            ForICloneable.SomeClass1 smth2 = new ForICloneable.SomeClass1("SomeB", 44);
-            smth1.Display();
-            smth2.Display();
-            ForICloneable.SomeClass1 smth3 = new ForICloneable.SomeClass1 { Age = 77 };
-            smth3.Display();
-            ForICloneable.SomeClass1[] nuts = { smth1, smth2, smth3 };
-            //Array.Sort(nuts);
-            foreach (ForICloneable.SomeClass1 nut in nuts)
+            int[] massiv = new int[10000];
+            Test_Massiv.Randomize_Massiv(massiv, 0, 10000);
+            massiv.QuickSort(0, 9999);
+            Bank_employee Peter = new Bank_employee("Peter");
+            Peter.DoShit?.DoSomeShit();
+            Peter.DoShit = new DoWork();
+            Peter.DoShit?.DoSomeShit();
+            Peter.DoShit = new DoWash();
+            Peter.DoShit?.DoSomeShit();
+            
+        }
+    }
+    public static class QuickSortTry
+    {
+        public static void Swap(ref int a, ref int b)
+        {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+        public static int Partition(int[] massiv, int first, int last)
+        {
+            int i = first - 1;
+            int key = massiv[last];
+            for (int j = first; j < last; j++)
             {
-                nut.Display();
+                if (massiv[j] <= key) Swap(ref massiv[++i], ref massiv[j]);
             }
-            Console.WriteLine();
-            ForICompareTo.SomeClass1 compareto1 = new ForICompareTo.SomeClass1 { Name = "Oleg", Age = 1 };
-            ForICompareTo.SomeClass1 compareto2 = new ForICompareTo.SomeClass1 { Name = "Maria", Age = 2 };
-            ForICompareTo.SomeClass1 compareto3 = new ForICompareTo.SomeClass1 { Name = "Sasha", Age = 3 };
-            ForICompareTo.SomeClass1 compareto4 = new ForICompareTo.SomeClass1 { Name = "Kolya", Age = 4 };
-            ForICompareTo.SomeClass1 compareto5 = new ForICompareTo.SomeClass1 { Name = "Natasha", Age = 5 };
-            ForICompareTo.SomeClass1[] peoples = { compareto1, compareto2, compareto3, compareto4, compareto5 };
-            foreach (ForICompareTo.SomeClass1 people in peoples)
+            Swap(ref massiv[++i], ref massiv[last]);
+            return i;
+        }
+        public static void QuickSort(this int[] massiv, int first, int last)
+        {
+            if (first < last)
             {
-                people.Display();
-            }
-            Console.WriteLine();
-            Array.Sort(peoples);
-            foreach (ForICompareTo.SomeClass1 people in peoples)
-            {
-                people.Display();
-            }
-            int c = compareto1.CompareTo(smth1, 0);
-            Console.WriteLine(c);
-            Console.WriteLine();
-            ForICompareTo.SomeClass2 apex1 = new ForICompareTo.SomeClass2 { Age = 3 };
-            ForICompareTo.SomeClass2 apex2 = new ForICompareTo.SomeClass2 { Age = 1 };
-            ForICompareTo.SomeClass2 apex3 = new ForICompareTo.SomeClass2 { Age = 2 };
-            ForICompareTo.SomeClass2[] apex = { apex1, apex2, apex3 };
-            foreach (ForICompareTo.SomeClass2 ap in apex)
-            {
-                ap.Display();
-            }
-            Array.Sort(apex);
-            foreach (ForICompareTo.SomeClass2 ap in apex)
-            {
-                ap.Display();
-            }
-            Console.WriteLine();
-
-            ForICompareTo.SomeClass3 look = new ForICompareTo.SomeClass3 { Age = 3 };
-            ForICompareTo.SomeClass3 at = new ForICompareTo.SomeClass3 { Age = 1 };
-            ForICompareTo.SomeClass3 me = new ForICompareTo.SomeClass3 { Age = 2 };
-            ForICompareTo.SomeClass3[] what = { look, at, me };
-            foreach (ForICompareTo.SomeClass3 who in what)
-            {
-                who.Display();
-            }
-            Array.Sort(what,new ForICompareTo.SomeClass3());
-            foreach (ForICompareTo.SomeClass3 who in what)
-            {
-                who.Display();
+                int key = Partition(massiv, first, last);
+                QuickSort(massiv, first, key - 1);
+                QuickSort(massiv, key + 1, last);
             }
         }
-    } 
+        public static void LeftRightQuickSort(this int[] massiv, int first, int last)
+        {
+            int middle = massiv[first + (last - first) / 2];
+            int b = first, e = last;
+            do
+            {
+                while (massiv[b] < middle) b++;
+                while (massiv[e] > middle) e--;
+                if (b <= e)
+                {
+                    int temp = massiv[b];
+                    massiv[b] = massiv[e];
+                    massiv[e] = temp;
+                    b++;
+                    e--;
+                }
+            } while (b <= e);
+            if (e > first) LeftRightQuickSort(massiv, first, e);
+            if (b < last) LeftRightQuickSort(massiv, b, last);
+        }
+    }
+
+    public interface IDoSomeShit
+    {
+        void DoSomeShit();
+    }
+    public class DoWork : IDoSomeShit
+    {
+        public void DoSomeShit()
+        {
+            Console.WriteLine("I do work");
+        }
+    }
+    public class DoWash : IDoSomeShit
+    {
+        public void DoSomeShit()
+        {
+            Console.WriteLine("I wash, do you see that?");
+        }
+    }
+
+    public interface IPerson
+    {
+        string Name { get; }
+        int Age { get; }
+    }
+    public class Bank_employee : IPerson
+    {
+        public Bank_employee() : this("NoName", 999) { }
+        public Bank_employee(int age) : this("NoName", age) { }
+        public Bank_employee(string name) : this(name, 999) { }
+        public Bank_employee(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public IDoSomeShit DoShit;
+        public string Name { get; private set; }
+        public int Age { get; private set; }
+
+    }
 }

@@ -138,7 +138,7 @@ namespace ClassLibrary_Test
             ActionMove(car);
             ActionMove(person);
             IFuncDisplay fun = new IFuncDisplay();
-            (fun as IFunc).Display();
+            (fun as IFunc).Display(); 
             (fun as IFunc2).Display();
         }
     }
